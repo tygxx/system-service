@@ -39,7 +39,7 @@ public class User implements Serializable {
     /**
      * 用户名
      */
-    @Column
+    @Column(unique = true)
     private String username;
 
     /**
@@ -102,7 +102,7 @@ public class User implements Serializable {
     // 这里要忽略角色里面的用户序列化，不然相当于死循环
     @JsonIgnoreProperties(value = { "userList" })
     // 这里如果不用eager，那么当save时，它会先判断id存不存在（会查询一下）再保存，然而查询时拿不到role，更新完后它会再发一条删除语句，删除中间表的userId数据
-    @ManyToMany(fetch = FetchType.EAGER) 
+    @ManyToMany(fetch = FetchType.LAZY) 
     @JoinTable(name = "sys_user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
     private List<Role> roleList;

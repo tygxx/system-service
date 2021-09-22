@@ -60,7 +60,7 @@ public class Role implements Serializable {
 
     // 这里要忽略Permission里面的roleList序列化，不然相当于死循环
     @JsonIgnoreProperties(value = { "roleList" })
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_role_permission", joinColumns = { @JoinColumn(name = "role_id") }, inverseJoinColumns = {
             @JoinColumn(name = "permission_id") })
     private List<Permission> permissionList;

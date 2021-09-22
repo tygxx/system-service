@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.10.RELEASE</version>
+        <version>2.3.2.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>com.yy.ds</groupId>
@@ -17,11 +17,11 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- 指定springCloud版本 -->
+            <!-- 指定springCloud版本，版本推荐关系https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR10</version>
+                <version>Hoxton.SR9</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

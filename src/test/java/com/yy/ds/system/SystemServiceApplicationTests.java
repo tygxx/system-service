@@ -14,7 +14,7 @@ public class SystemServiceApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(userDao.findById(1L));
+        System.out.println(userDao.findByIdFetchRole(1L).toString());
     }
 
 }

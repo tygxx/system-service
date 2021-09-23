@@ -2,7 +2,7 @@ package com.yy.ds.system.user.controller;
 
 import javax.validation.Valid;
 
-import com.yy.ds.system.common.CommonResult;
+import com.yy.ds.common.api.CommonResult;
 import com.yy.ds.system.user.domain.User;
 import com.yy.ds.system.user.dto.UserReq;
 import com.yy.ds.system.user.service.UserService;

@@ -2,7 +2,7 @@ package com.yy.ds.system.user.service;
 
 import javax.transaction.Transactional;
 
-import com.yy.ds.system.exception.Asserts;
+import com.yy.ds.common.exception.Asserts;
 import com.yy.ds.system.user.dao.UserDao;
 import com.yy.ds.system.user.domain.User;
 

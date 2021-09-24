@@ -20,11 +20,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "sys_role")
-@Data
+// 两个实体类之间进行了双向映射，用@Data都重写toString，单元测试会有问题（不在两方都重写toString，循环导致的），导致栈溢出(java.lang.StackOverflowError)
+@Getter
+@Setter
 public class Role implements Serializable {
 
     private static final long serialVersionUID = -759644943064216466L;

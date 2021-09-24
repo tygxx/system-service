@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,16 +16,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.yy.ds.system.user.enums.UserEnums.Status;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "sys_user")
-@Data
+// 两个实体类之间进行了双向映射，用@Data都重写toString，单元测试会有问题（不在两方都重写toString，循环导致的），导致栈溢出(java.lang.StackOverflowError)
+@Getter
+@Setter
 public class User implements Serializable {
 
     private static final long serialVersionUID = -759644943064216466L;
@@ -39,7 +39,7 @@ public class User implements Serializable {
     /**
      * 用户名
      */
-    @Column(unique = true)
+    @Column()
     private String username;
 
     /**
@@ -93,16 +93,14 @@ public class User implements Serializable {
     private Date loginTime;
 
     /**
-     * 帐号启用状态
+     * 用户状态
      */
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private Boolean enabled;
 
     // 这里要忽略角色里面的用户序列化，不然相当于死循环
     @JsonIgnoreProperties(value = { "userList" })
     // 这里如果不用eager，那么当save时，它会先判断id存不存在（会查询一下）再保存，然而查询时拿不到role，更新完后它会再发一条删除语句，删除中间表的userId数据
-    @ManyToMany(fetch = FetchType.LAZY) 
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
     private List<Role> roleList;

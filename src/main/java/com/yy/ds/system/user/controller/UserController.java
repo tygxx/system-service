@@ -3,6 +3,7 @@ package com.yy.ds.system.user.controller;
 import javax.validation.Valid;
 
 import com.yy.ds.common.api.CommonResult;
+import com.yy.ds.common.dto.UserDto;
 import com.yy.ds.system.user.domain.User;
 import com.yy.ds.system.user.dto.UserReq;
 import com.yy.ds.system.user.service.UserService;
@@ -42,10 +43,16 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据id查询")
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public CommonResult<User> findOne(@PathVariable Long id) {
         User user = userService.getById(id);
         user.setRoleList(null);
         return CommonResult.success(user);
+    }
+
+    @ApiOperation("根据用户名获取通用用户信息")
+    @GetMapping(value = "username/{username}")
+    public UserDto loadUserByUsername(@PathVariable String username) {
+        return userService.findByUserName(username);
     }
 }

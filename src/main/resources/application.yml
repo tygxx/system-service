@@ -30,9 +30,9 @@ spring:
     generate-ddl: true
     #设置为true：Spring Boot整合JPA后Hibernate的Session就交付给Spring去管理。每次数据库操作后，会关闭Session，当我们想要用懒加载方式去获得数据的时候，原来的Session已经关闭，不能获取数据
     #设置为false：防止hibernate的session外延到controller
-    open-in-view: true
-    #显示sql语句
-    show-sql: true
+    open-in-view: false
+    #显示sql语句，和下面日志放开一个就行
+    # show-sql: true
     hibernate:
     #在springboot项目中使用springdata Jpa，并且希望当我的实体类发生了更改，数据库表结构随着实体类的改变而自动做出相应的改变。  
       ddl-auto: update
@@ -41,8 +41,8 @@ spring:
         format_sql: true #格式化sql
         # dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
-        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-        enable_lazy_load_no_trans: true # 开启懒加载,不开启在实体类中使用 FetchType.LAZY 会报错
+        # current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        # enable_lazy_load_no_trans: true # 开启懒加载,不开启在实体类中使用 FetchType.LAZY 会报错
 
   redis:
     host: ${REDIS_HOST:localhost} # Redis服务器地址
@@ -57,10 +57,10 @@ spring:
         max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
         max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
 
-# 显示jpq的sql参数
 logging:
   level:
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.SQL: debug # hibernate的sql日志级别（会打印出请求的sql）
+    org.hibernate.type.descriptor.sql.BasicBinder: trace # 显示?的参数
 
 redisCahe:
   expireTime: 3600 # redis的默认存储时长（秒）

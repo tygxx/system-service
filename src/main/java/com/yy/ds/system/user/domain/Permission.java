@@ -20,11 +20,14 @@ import com.yy.ds.system.user.enums.UserEnums.PermissionType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "sys_permission")
-@Data
+// 两个实体类之间进行了双向映射，用@Data都重写toString，单元测试会有问题（不在两方都重写toString，循环导致的），导致栈溢出(java.lang.StackOverflowError)
+@Getter
+@Setter
 public class Permission implements Serializable {
 
     private static final long serialVersionUID = -2997129690494851125L;

@@ -1,13 +1,20 @@
 package com.yy.ds.system.user.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
+import com.yy.ds.common.dto.UserDto;
 import com.yy.ds.common.exception.Asserts;
 import com.yy.ds.system.user.dao.UserDao;
+import com.yy.ds.system.user.domain.Role;
 import com.yy.ds.system.user.domain.User;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import cn.hutool.crypto.digest.BCrypt;
 
@@ -41,6 +48,22 @@ public class UserService {
 
     public User getById(Long id) {
         return userDao.findById(id).get();
+    }
+
+    public UserDto findByUserName(String username) {
+        User user = userDao.findByUsernameFetchRole(username);
+        if (user != null) {
+            List<Role> roleList = user.getRoleList();
+            UserDto userDTO = new UserDto();
+            BeanUtils.copyProperties(user, userDTO);
+            if (!CollectionUtils.isEmpty(roleList)) {
+                List<String> roleStrList = roleList.stream().map(item -> item.getId() + "_" + item.getName())
+                        .collect(Collectors.toList());
+                userDTO.setRoles(roleStrList);
+            }
+            return userDTO;
+        }
+        return null;
     }
 
     @Transactional

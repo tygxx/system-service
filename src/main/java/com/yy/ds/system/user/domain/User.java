@@ -93,9 +93,10 @@ public class User implements Serializable {
     private Date loginTime;
 
     /**
-     * 用户状态
+     * 用户状态，默认可用
      */
-    private Boolean enabled;
+    @Column()
+    private Boolean enabled = true;
 
     // 这里要忽略角色里面的用户序列化，不然相当于死循环
     @JsonIgnoreProperties(value = { "userList" })

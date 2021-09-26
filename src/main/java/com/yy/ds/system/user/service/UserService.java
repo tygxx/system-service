@@ -29,17 +29,18 @@ public class UserService {
         // 将密码进行加密操作
         String encodePassword = BCrypt.hashpw(user.getPassword());
         user.setPassword(encodePassword);
-        if (user.getId() == null) {
-            Long usernameCount = userDao.countByUsername(user.getUsername());
-            if (usernameCount > 0) {
+        User oldUserByUsername = userDao.findByUsername(user.getUsername());
+        // 不能添加相同用户名
+        if (user.getId() == null && oldUserByUsername != null) {
+            Asserts.fail("该用户:" + user.getUsername() + " ，已经存在");
+        } else {
+            // 修改时如果没有role，直接save，它会把已有的中间表数据清理掉
+            User oldUserById = userDao.findByIdFetchRole(user.getId());
+            user.setRoleList(oldUserById.getRoleList());
+            // 新修改的用户名不能和老用户名重复
+            if (oldUserByUsername != null && oldUserByUsername.getId() != user.getId()) {
                 Asserts.fail("该用户:" + user.getUsername() + " ，已经存在");
             }
-        } else if (user.getRoleList() == null) {
-            // 修改时需要判断user中有没有role，如果没有role，直接save，它会把已有的中间表数据清理掉
-            User oldUser = userDao.findByIdFetchRole(user.getId());
-            user.setRoleList(oldUser.getRoleList());
-            // 不让修改的参数
-            user.setPassword(oldUser.getPassword());
         }
 
         // save方法：如果user有id，会先根据id去发一条查询sql，没有查询到数据则新增、查询到则修改
@@ -71,4 +72,5 @@ public class UserService {
         userDao.deleteById(id);
         return true;
     }
+
 }

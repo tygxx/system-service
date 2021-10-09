@@ -13,6 +13,7 @@ import com.yy.ds.system.user.domain.User;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -47,8 +48,11 @@ public class UserService {
         return userDao.save(user);
     }
 
+    @Cacheable(cacheNames = "user", key = "#id", unless = "#result == null ")
     public User getById(Long id) {
-        return userDao.findById(id).get();
+        User user = userDao.findById(id).get();
+        user.setRoleList(null);
+        return user;
     }
 
     public UserDto findByUserName(String username) {

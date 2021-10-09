@@ -64,4 +64,3 @@ logging:
 
 redisCahe:
   expireTime: 3600 # redis的默认存储时长（秒）
-  generatePre: cache # 该服务缓存在redis中的通用前缀
